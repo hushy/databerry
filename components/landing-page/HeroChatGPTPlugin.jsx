@@ -218,7 +218,7 @@ export function HeroChatGPTPlugin() {
               mt={6}
               className="justify-center sm:justify-start"
             >
-              <Link target="_blank" href={'https://app.databerry.ai/signin'}>
+              <Link target="_blank" href={'/signin'}>
                 <Button
                   variant="solid"
                   size="lg"
@@ -247,7 +247,7 @@ export function HeroChatGPTPlugin() {
             <div className='w-full h-[500px] overflow-hidden rounded-3xl bg-white'>
 
             <iframe
-              src="https://app.databerry.ai/agents/clgtujkqh022j0u0zw3ut8vk3/iframe"
+              src="/agents/clgtujkqh022j0u0zw3ut8vk3/iframe"
               width="100%"
               height="100%"
               frameBorder="0"
@@ -259,7 +259,7 @@ export function HeroChatGPTPlugin() {
         </div>
 
         <div className="flex justify-center mt-10 gap-x-6">
-          {/* <Button target="_blank" href="https://app.databerry.ai/signin">Start Building</Button> */}
+          {/* <Button target="_blank" href="/signin">Start Building</Button> */}
           {/* <Button
           href="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
           variant="outline"

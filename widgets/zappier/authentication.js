@@ -21,7 +21,7 @@ module.exports = {
       label: 'Databerry API Key',
       type: 'password',
       helpText:
-        'Your Databerry API Key can be found here https://app.databerry.ai/account',
+        'Your Databerry API Key can be found here /account',
     },
   ],
   customConfig: {},

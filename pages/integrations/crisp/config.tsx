@@ -159,7 +159,7 @@ export default function CrispConfig(props: { agent: Agent }) {
                       <Stack>
                         You can find your API Key in your Databerry{' '}
                         <Link
-                          href={'https://app.databerry.ai/account'}
+                          href={'/account'}
                           target="_blank"
                         >
                           <Typography color="primary">

@@ -23,16 +23,17 @@ const config: {
 } = {
   [SubscriptionPlan.level_0]: {
     type: SubscriptionPlan.level_0,
-    label: 'Free',
+    label: 'Early Adopter',
     limits: {
-      maxAgents: 1,
-      maxAgentsQueries: 20,
-      maxDatastores: 1,
-      maxDatasources: 10, // per datastore
-      maxFileSize: 1000000, // 1 MB
-      maxDataProcessing: 5000000, // 5 MB
-      maxSummary: 10,
-      maxWebsiteURL: 10,
+      //  No limits
+      maxAgents: 100,
+      maxAgentsQueries: 100000,
+      maxDatastores: 100,
+      maxDatasources: 500,
+      maxFileSize: 20000000,
+      maxDataProcessing: 500000000,
+      maxSummary: 500,
+      maxWebsiteURL: 10000,
     },
   },
   [SubscriptionPlan.level_1]: {

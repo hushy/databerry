@@ -6,9 +6,11 @@
     "dev": "next dev",
     "dev:all": "npm-run-all --parallel dev worker:datasource-loader",
     "build": "next build",
-    "start": "next start",
+    "start": "nohup next start&",
+    "stop": "pkill node",
+    "restart":"pkill node;nohup next start&",
     "lint": "next lint",
-    "build:widget:chat-bubble": "NEXT_PUBLIC_DASHBOARD_URL=https://app.databerry.ai npx parcel build widgets/chat-bubble.tsx",
+    "build:widget:chat-bubble": "NEXT_PUBLIC_DASHBOARD_URL= npx parcel build widgets/chat-bubble.tsx",
     "publish:package:chat-bubble": "npm run build:widget:chat-bubble && cp dist/chat-bubble* packages/chat-bubble/ && cd packages/chat-bubble && npm version patch && npm publish --access public",
     "prisma:generate": "prisma generate",
     "prisma:migrate:dev": "dotenv -e .env.local -- prisma migrate dev",
@@ -19,7 +21,11 @@
     "docker:compose": "docker compose -f .dev/databerry/docker-compose.yml --env-file .dev/databerry/docker.env",
     "stripe:dev": "stripe listen --forward-to localhost:3000/api/stripe/webhook",
     "docker:compose:deps": "docker compose -f .dev/databerry/docker-compose.deps.yml --env-file .dev/databerry/docker.env",
-    "docker:compose:app": "docker compose -f .dev/databerry/docker-compose.app.yml --env-file .dev/databerry/docker.env"
+    "docker:compose:app": "docker compose -f .dev/databerry/docker-compose.app.yml --env-file .dev/databerry/docker.env",
+    "postinstall": "prisma generate"
+  },
+  "engines" : {
+    "node" : ">=18.0.0 <19.0.0"
   },
   "prisma": {
     "seed": "npx tsx prisma/seed.ts"
@@ -51,9 +57,7 @@
     "@prisma/client": "^4.12.0",
     "@slack/web-api": "^6.8.1",
     "@tanstack/react-virtual": "3.0.0-beta.54",
-    "@types/node": "18.15.10",
     "@types/nodemailer": "^6.4.7",
-    "@types/react": "18.0.29",
     "@types/react-dom": "18.0.11",
     "@xmldom/xmldom": "^0.8.7",
     "aws-sdk": "^2.1343.0",
@@ -78,7 +82,7 @@
     "msgpackr": "^1.9.3",
     "multer": "1.4.5-lts.1",
     "nanoid": "^4.0.2",
-    "next": "13.2.4",
+    "next": "13.4.5",
     "next-auth": "^4.20.1",
     "next-connect": "^0.13.0",
     "nodemailer": "^6.9.1",
@@ -105,7 +109,6 @@
     "stripe": "^11.17.0",
     "superjson": "^1.12.2",
     "swr": "^2.1.1",
-    "typescript": "5.0.2",
     "uuid": "^9.0.0",
     "xlsx": "https://cdn.sheetjs.com/xlsx-0.19.2/xlsx-0.19.2.tgz",
     "yaml": "^2.2.1",
@@ -116,7 +119,9 @@
     "@types/cors": "^2.8.13",
     "@types/mime-types": "^2.1.1",
     "@types/multer": "^1.4.7",
+    "@types/node": "18.15.10",
     "@types/nprogress": "^0.2.0",
+    "@types/react": "18.0.29",
     "@types/react-syntax-highlighter": "^15.5.6",
     "@types/uuid": "^9.0.1",
     "autoprefixer": "^10.4.14",
@@ -125,6 +130,7 @@
     "npm-run-all": "^4.1.5",
     "postcss": "^8.4.21",
     "prisma": "^4.12.0",
-    "tailwindcss": "^3.2.7"
+    "tailwindcss": "^3.2.7",
+    "typescript": "5.0.2"
   }
 }

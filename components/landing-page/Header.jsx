@@ -94,7 +94,7 @@ function MobileNavigation() {
             {/* <MobileNavLink href="#testimonials">Testimonials</MobileNavLink> */}
             {/* <MobileNavLink href="#pricing">Pricing</MobileNavLink> */}
             <hr className="m-2 border-slate-300/40" />
-            <MobileNavLink href="https://app.databerry.ai">
+            <MobileNavLink href="">
               Sign in
             </MobileNavLink>
           </Popover.Panel>
@@ -145,15 +145,15 @@ export function Header() {
           </div>
           <div className="flex items-center gap-x-5 md:gap-x-8">
             {/* <div className="hidden md:block">
-              <NavLink href="https://app.databerry.ai">Sign in</NavLink>
+              <NavLink href="">Sign in</NavLink>
             </div> */}
-            {/* <Button target="_blank" href="https://app.databerry.ai/signin" color="blue">
+            {/* <Button target="_blank" href="/signin" color="blue">
               <span>
                 Sign In
               </span>
             </Button> */}
             {/* Change following link href with /signin for local signin */}
-            <Link href="https://app.databerry.ai/signin">
+            <Link href="/signin">
               <Button variant="outlined" sx={{ borderRadius: 100 }}>
                 Sign In
               </Button>

@@ -7,40 +7,38 @@ import { WorkerPro } from '@app/utils/bullmq-pro';
 import prisma from '@app/utils/prisma-client';
 import taskLoadDatasource from '@app/utils/task-load-datasource';
 
-const connection = new Redis(process.env.REDIS_URL!);
+const connection = new Redis({
+  port: parseInt(process.env.REDIS_PORT || '6379'), // Redis port
+  host: process.env.REDIS_URL, // Redis host
+  username: process.env.REDIS_USERNAME, // needs Redis >= 6
+  password: process.env.REDIS_PASSWORD,
+  db: 0, // Defaults to 0
+  tls: {}
+});
 
-const datasourceLoadQueue = new WorkerPro(
-  TaskQueue.load_datasource,
-  async (job) => {
-    const data = job?.data as TaskLoadDatasourceRequestSchema;
-    try {
-      console.log('JOB', data);
+const loadData = async (job:any) => {
+  const data = job?.data as TaskLoadDatasourceRequestSchema;
+  try {
+    console.log('JOB', data);
 
-      await taskLoadDatasource(data);
+    await taskLoadDatasource(data);
 
-      return;
-    } catch (err) {
-      // TODO: handle error
-      console.error(err);
+    return;
+  } catch (err) {
+    // TODO: handle error
+    console.error(err);
 
-      await prisma.appDatasource.update({
-        where: {
-          id: data?.datasourceId,
-        },
-        data: {
-          status: DatasourceStatus.error,
-        },
-      });
+    await prisma.appDatasource.update({
+      where: {
+        id: data?.datasourceId,
+      },
+      data: {
+        status: DatasourceStatus.error,
+      },
+    });
 
-      throw new Error(JSON.stringify(err));
-    }
-  },
-  {
-    connection: connection as any,
-    concurrency: 5,
-    removeOnComplete: { count: 1000 },
-    removeOnFail: { count: 5000 },
+    throw new Error(JSON.stringify(err));
   }
-);
+}
 
-export default datasourceLoadQueue;
+export default loadData;

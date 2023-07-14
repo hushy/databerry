@@ -53,7 +53,7 @@ function databerry_plugin_settings_page() {
   $is_databerry_working = isset($agent_id) && !empty($agent_id);
   $http_callback = "http" . (($_SERVER['SERVER_PORT'] == 443) ? "s://" : "://") . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
   // $base_url = "http://localhost:3000";
-  $base_url = "https://app.databerry.ai";
+  $base_url = "";
   $add_to_databerry_link = $base_url."/integrations/wordpress/config?callback=$http_callback&siteurl=".get_option('siteurl')."&agentId=".$agent_id;
 ?>
 

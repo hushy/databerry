@@ -4,5 +4,4 @@ const baseConfig = require('./next.config.base');
 const nextConfig = {
   ...baseConfig,
 };
-
 module.exports = nextConfig;

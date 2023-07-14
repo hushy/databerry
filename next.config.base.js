@@ -10,6 +10,8 @@ const nextConfig = {
   },
   eslint: {
     dirs: ['pages', 'utils', 'components', 'hooks', 'types', 'widgets'],
+    ignoreDuringBuilds: true,
+
   },
 
   reactStrictMode: true,

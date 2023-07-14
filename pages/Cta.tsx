@@ -14,12 +14,12 @@ export default function Cta() {
             behind - start building your own custom AI chatbot today!`}
           </p>
           <div className="flex items-center justify-center mt-10 gap-x-6">
-            <a
-              href="https://app.databerry.ai/agents"
+            <Link
+              href="/agents"
               className="rounded-md bg-white px-3.5 py-2.5 text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
             >
               Get started Now! →
-            </a>
+            </Link>
             {/* <a href="#" className="text-sm font-semibold leading-6 text-white">
               Learn more <span aria-hidden="true">→</span>
             </a> */}

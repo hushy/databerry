@@ -2,7 +2,7 @@ import Box from '@mui/joy/Box';
 import { useColorScheme } from '@mui/joy/styles';
 import { Agent, ConversationChannel } from '@prisma/client';
 import { useRouter } from 'next/router';
-import React, { useEffect, useMemo } from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 
 import ChatBox from '@app/components/ChatBox';
 import useAgentChat from '@app/hooks/useAgentChat';
@@ -32,6 +32,31 @@ function ChatBoxFrame(props: { initConfig?: AgentInterfaceConfig }) {
     props.initConfig || defaultChatBubbleConfig
   );
   const { visitorId } = useVisitorId();
+  const [contextData, setContextData] = useState(null); // Add a state variable to store context data
+
+  useEffect(() => {
+
+    // Define an event listener for the 'message' event
+    const handleMessage = (event:any) => {
+      // Only handle 'contextData' messages
+      if (event.data && event.data.type === 'contextData') {
+        setContextData(event.data.payload);
+      }
+    };
+
+    // Add the event listener
+    window.addEventListener('message', handleMessage);
+
+    // Post a message to the parent window indicating that the chatbot is ready
+    window.parent.postMessage({ type: 'chatbotReady',payload:config.initialMessage }, '*');
+
+    // Remove the event listener when the component is unmounted
+    return () => {
+      window.removeEventListener('message', handleMessage);
+    };
+  }, []); // This useEffect should only run once, when the component is first rendered
+
+
 
   const { history, handleChatSubmit } = useAgentChat({
     queryAgentURL: `${API_URL}/api/external/agents/${agentId}/query`,
@@ -40,6 +65,10 @@ function ChatBoxFrame(props: { initConfig?: AgentInterfaceConfig }) {
     //   ? `/api/external/agents/${router.query?.agentId}/history/${visitorId}`
     //   : undefined,
   });
+  const handleChatSubmitWithContext = async (message : string) => {
+    message = `#CONTEXT DATA\n ${contextData} \n #END CONTEXT DATA \n ${message}`;
+    return handleChatSubmit(message);
+  }
 
   const textColor = useMemo(() => {
     return pickColorBasedOnBgColor(
@@ -109,7 +138,7 @@ function ChatBoxFrame(props: { initConfig?: AgentInterfaceConfig }) {
     >
       <ChatBox
         messages={history}
-        onSubmit={handleChatSubmit}
+        onSubmit={handleChatSubmitWithContext}
         messageTemplates={config.messageTemplates}
         initialMessage={config.initialMessage}
       />

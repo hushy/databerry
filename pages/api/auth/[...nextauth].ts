@@ -2,8 +2,8 @@ import { PrismaAdapter } from '@next-auth/prisma-adapter';
 import { PrismaClient, SubscriptionPlan, Usage } from '@prisma/client';
 import NextAuth, { AuthOptions } from 'next-auth';
 import EmailProvider from 'next-auth/providers/email';
-import GithubProvider from 'next-auth/providers/github';
 import GoogleProvider from 'next-auth/providers/google';
+import LinkedInProvider from 'next-auth/providers/linkedin';
 
 import prisma from '@app/utils/prisma-client';
 import uuidv4 from '@app/utils/uuid';
@@ -61,9 +61,9 @@ export const authOptions = {
       server: process.env.EMAIL_SERVER,
       from: process.env.EMAIL_FROM,
     }),
-    GithubProvider({
-      clientId: process.env.GITHUB_ID!,
-      clientSecret: process.env.GITHUB_SECRET!,
+    LinkedInProvider({
+      clientId: process.env.LINKEDIN_ID!,
+      clientSecret: process.env.LINKEDIN_SECRET!,
     }),
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID!,

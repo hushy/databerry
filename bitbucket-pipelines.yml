@@ -1,0 +1,41 @@
+image: node:18
+
+definitions:
+  steps:
+    step: &Build-step
+      name: 'Build and Test'
+      caches:
+        - node
+        - pnpm: $BITBUCKET_CLONE_DIR/.pnpm-store
+
+pipelines:
+  branches:
+    main:
+      - step:
+          deployment: Prod
+          caches:
+            - node
+          name: 'Deploy to Production'
+          max-time: 10
+          script:
+            - corepack enable
+            - corepack prepare pnpm@latest-8 --activate
+            - pnpm install
+            - pnpm prisma:generate
+            - pnpm build
+            - apt-get update
+            - apt-get install zip -y
+            - echo "Zipping the repo.."
+            - ls -lha
+            - zip application.zip -r .next/ ./package.json .ebextension/ ./next.config.js
+            - pipe: atlassian/aws-elasticbeanstalk-deploy:1.1.0
+              variables:
+                AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
+                AWS_SECRET_ACCESS_KEY: $AWS_SECRET_KEY
+                AWS_DEFAULT_REGION: 'eu-west-3'
+                APPLICATION_NAME: 'AgentBuilder'
+                ENVIRONMENT_NAME: 'AgentBuilder-env'
+                ZIP_FILE: 'application.zip'
+                S3_BUCKET: 'elasticbeanstalk-eu-west-3-257862372815'
+                WAIT: 'true'
+                DEBUG: 'true'

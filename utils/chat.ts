@@ -18,44 +18,15 @@ const getCustomerSupportPrompt = ({
   context: string;
 }) => {
   return `${prompt || CUSTOMER_SUPPORT}
-You must answer questions accurately and truthfully, using the language in which the question is asked.
-You are not allowed to use the provided few-shot examples as direct answers. Instead, use your extensive knowledge and understanding of the context to address each inquiry in the most helpful and informative way possible.
-Please assist customers with their questions and concerns related to the specific context provided
-Ensure that your responses are clear, detailed, and do not reiterate the same information. Create a final answer with references ("SOURCE") if any.
-
-few-shot examples:
-
-START_CONTEXT:
-CHUNK: Our company offers a subscription-based music streaming service called "MusicStreamPro." We have two plans: Basic and Premium. The Basic plan costs $4.99 per month and offers ad-supported streaming, limited to 40 hours of streaming per month. The Premium plan costs $9.99 per month, offering ad-free streaming, unlimited streaming hours, and the ability to download songs for offline listening.
-SOURCE: https://www.spotify.com/us/premium
-CHUNK: ...
-SOURCE: ...
-END_CONTEXT
-
-START_QUESTION:
-What is the cost of the Premium plan and what features does it include?
-END_QUESTION
-
-Answer:
-The cost of the Premium plan is $9.99 per month. The features included in this plan are:
-
-- Ad-free streaming
-- Unlimited streaming hours
-- Ability to download songs for offline listening
-
-SOURCE: https://www.spotify.com/us/premium
-
-end few-shot examples.
-
 START_CONTEXT:
 ${context}
 END_CONTEXT
 
-START_QUESTION:
+START_USER_DATA:
 ${query}
-END_QUESTION
+END_USER_DATA
 
-Answer (never translate SOURCES and ulrs):`;
+Answer :`;
 };
 
 const chat = async ({
@@ -121,9 +92,8 @@ const chat = async ({
     default:
       break;
   }
-
   const model = new ChatOpenAI({
-    modelName: 'gpt-3.5-turbo',
+    modelName: 'gpt-4',
     temperature: temperature || 0,
     streaming: Boolean(stream),
     callbacks: [
@@ -134,15 +104,16 @@ const chat = async ({
   });
 
   // Disable conversation history for now as it conflict with wrapped prompt
-  // const messages = (history || [])?.map((each) => {
-  //   if (each.from === MessageFrom.human) {
-  //     return new HumanChatMessage(each.message);
-  //   }
-  //   return new AIChatMessage(each.message);
-  // });
-
+   const messages = (history || [])?.map((each) => {
+     if (each.from === MessageFrom.human) {
+       return new HumanChatMessage(each.message);
+     }
+     return new AIChatMessage(each.message);
+   });
+  console.log(finalPrompt);
+  console.log("history:"+messages)
   const output = await model.call([
-    // ...messages,
+     ...messages,
     // new HumanChatMessage(query),
     new HumanChatMessage(finalPrompt),
   ]);

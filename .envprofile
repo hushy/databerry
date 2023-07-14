@@ -1,0 +1,4 @@
+export NEXT_PUBLIC_DASHBOARD_URL=https://app.baracash.fr
+export NEXT_PUBLIC_DASHBOARD_URL=https://app.baracash.fr
+export NODE_OPTIONS=--max-old-space-size=14000
+export NEXTAUTH_URL=https://app.baracash.fr
